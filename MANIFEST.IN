@@ -1,5 +1,5 @@
 include cardmaker/fonts/*
-include cardmaker/img/*
+include cardmaker/img/*.png
 include cardmaker/img/cards/*
 include cardmaker/img/extras/*
 include cardmaker/img/linkarrow/*
