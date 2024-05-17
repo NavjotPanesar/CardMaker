@@ -1,8 +1,0 @@
-LICENSE
-README.md
-setup.py
-cardmaker/CardMaker.egg-info/PKG-INFO
-cardmaker/CardMaker.egg-info/SOURCES.txt
-cardmaker/CardMaker.egg-info/dependency_links.txt
-cardmaker/CardMaker.egg-info/requires.txt
-cardmaker/CardMaker.egg-info/top_level.txt
