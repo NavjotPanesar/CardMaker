@@ -3,7 +3,7 @@ from io import BytesIO
 import json
 from PIL import Image
 
-from cardmaker.modules.CardConstructor import CardConstructor
+from cardmaker.CardConstructor import CardConstructor
 
 input_data = {
   "card": "synchro",
