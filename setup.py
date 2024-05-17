@@ -20,7 +20,7 @@ setup(
     license = "MIT license",
     packages = find_packages(),
     package_data = {
-        '': ['*.png'],
+        '': ['*.png', '*.otf', '*.ttf'],
     },
     install_requires = requirements,
     classifiers=[
