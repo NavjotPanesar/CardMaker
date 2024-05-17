@@ -1,9 +1,9 @@
 include cardmaker/fonts/*
 include cardmaker/img/*.png
-include cardmaker/img/cards/*
-include cardmaker/img/extras/*
-include cardmaker/img/linkarrow/*
-include cardmaker/img/lvl/*
-include cardmaker/img/rarity/*
-include cardmaker/img/symbols/*
-include cardmaker/img/type/*
+include cardmaker/img/cards/*.png
+include cardmaker/img/extras/*.png
+include cardmaker/img/linkarrow/*.png
+include cardmaker/img/lvl/*.png
+include cardmaker/img/rarity/*.png
+include cardmaker/img/symbols/*.png
+include cardmaker/img/type/*.png
