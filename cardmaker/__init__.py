@@ -1,1 +1,1 @@
-import CardConstructor
+from CardConstructor import CardConstructor
