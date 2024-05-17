@@ -7,3 +7,4 @@ include cardmaker/img/lvl/*.png
 include cardmaker/img/rarity/*.png
 include cardmaker/img/symbols/*.png
 include cardmaker/img/type/*.png
+recursive-include cardmaker *.png
