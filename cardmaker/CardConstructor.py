@@ -29,7 +29,7 @@ class CardConstructor:
    
    def loadConfig(self):
       self.config = {
-         'source_path': "cardmaker/img/",
+         'source_path': "./img/",
          'path_cards': "cards/",
          'path_img':   "cardimages/",
          'path_attr':   "type/",
@@ -53,9 +53,9 @@ class CardConstructor:
             'fontsize23': 23,
             'fontsize15': 15,
             'fontsize12': 14,
-            'titleFont': 'cardmaker/fonts/Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf',
-            'AttrFont': "cardmaker/fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf",
-            'DescFont': 'cardmaker/fonts\Yu-Gi-Oh! Matrix Book.ttf',
+            'titleFont': './fonts/Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf',
+            'AttrFont': "./fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf",
+            'DescFont': './fonts\Yu-Gi-Oh! Matrix Book.ttf',
             'title_color': 'black',
             'title_color_xyz': 'white',
             'text_alignment': 'left'
