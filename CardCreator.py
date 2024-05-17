@@ -7,11 +7,11 @@ from cardmaker.CardConstructor import CardConstructor
 
 input_data = {
   "card": "synchro",
-  "Title": "John the Exhaler",
+  "Title": "Swords of LightLigheeets",
   "attribute": "Dark",
   "Level": 9,
   "Type": "Curse/Removal",
-  "Descripton": "When John wins an Aram, proving for once and for all \n that he is not the curse.",
+  "Descripton": "When John wins an Aram, proving for once and for all aaaaaaaaaaaaaaaaaa that he is not the curse.",
   "Atk": "",
   "Def": ""
 }
@@ -24,6 +24,6 @@ input_data["image_card"] = Image.open(BytesIO(base64.b64decode(img_from_db_examp
 
 card1 = CardConstructor(input_data)
 
-f = open("./output.txt", "wb")
+f = open("./output.png", "wb")
 f.write((card1.generateCard()))
 f.close

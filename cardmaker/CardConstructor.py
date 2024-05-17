@@ -7,6 +7,7 @@ from cardmaker.DrawImage import DrawImage
 from cardmaker.DrawArtwork import DrawArtwork
 from cardmaker.DrawAttribute import DrawAttribute
 from cardmaker.DrawLevel import DrawLevel
+import textwrap
 
 import base64
 from io import BytesIO
@@ -46,14 +47,20 @@ class CardConstructor:
          },
          'text': {
             'title_xy': (30,28),
+            'title_width': 320,
             'atk_xy': (265,557),
             'def_xy': (350,557),
             'type_xy': (35,460),
             'desc_xy': (35,480),
+            'desc_width': 350,
             'fontsize48': 48,
+            'fontsize38': 38,
+            'fontsize30': 30,
             'fontsize23': 23,
             'fontsize15': 15,
             'fontsize12': 14,
+            'fudge_y_small_title': 5,
+            'fudge_y_xsmall_title': 8,
             'titleFont': os.path.dirname(__file__)+'/fonts/Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf',
             'AttrFont': os.path.dirname(__file__)+"/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf",
             'DescFont': os.path.dirname(__file__)+'/fonts/Yu-Gi-Oh! Matrix Book.ttf',
@@ -94,19 +101,64 @@ class CardConstructor:
 
    def writeText(self):
       TitleFont                  = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize48'])
+      TitleFontSmall                  = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize38'])
+      TitleFontVerySmall                  = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize30'])
       ATKDEFFont                 = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize23'])
       AttrFont                   = ImageFont.truetype(self.config['text']['AttrFont'], self.config['text']['fontsize15'])
       DescFont                   = ImageFont.truetype(self.config['text']['DescFont'], self.config['text']['fontsize12'])
       
-      if self.json_card['card'] == "XYZ":
-         self.draw.text((self.config['text']['title_xy']), self.json_card['Title'], font=TitleFont, fill=self.config['text']['title_color_xyz'], align=self.config['text']['text_alignment']) 
-      else:
-         self.draw.text((self.config['text']['title_xy']), self.json_card['Title'], font=TitleFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
+      title_color = self.config['text']['title_color_xyz'] if self.json_card['card'] == "XYZ" else self.config['text']['title_color']
+      
+      selected_title_font = TitleFont
+      fudge = 0
+      if not self.will_text_fit(self.json_card['Title'], self.config['text']['title_width'], selected_title_font):
+         selected_title_font = TitleFontSmall
+         fudge = self.config['text']['fudge_y_small_title']
+         if not self.will_text_fit(self.json_card['Title'], self.config['text']['title_width'], selected_title_font):
+            selected_title_font = TitleFontVerySmall
+            fudge = self.config['text']['fudge_y_xsmall_title']
+      title_xy = (self.config['text']['title_xy'][0], self.config['text']['title_xy'][1] + fudge)
+
+      self.draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill=title_color, align=self.config['text']['text_alignment']) 
 
       self.draw.text((self.config['text']['atk_xy']), self.json_card['Atk'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
       self.draw.text((self.config['text']['def_xy']), self.json_card['Def'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
       self.draw.text((self.config['text']['type_xy']), "[" + self.json_card['Type'] + "]", font=AttrFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
-      self.draw.text((self.config['text']['desc_xy']), self.json_card['Descripton'], font=DescFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
+
+      wrapped_desc = self.wrap_text(self.json_card['Descripton'], self.config['text']['desc_width'], DescFont)
+      self.draw.text((self.config['text']['desc_xy']),  wrapped_desc, font=DescFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
+
+   def wrap_text(self, text: str, width: int, font: ImageFont):
+      text_lines = []
+      text_line = []
+      text = text.replace('\n', ' [br] ')
+      words = text.split()
+
+      for word in words:
+         if word == '[br]':
+            text_lines.append(' '.join(text_line))
+            text_line = []
+            continue
+         text_line.append(word)
+         left, top, right, bottom = font.getbbox(' '.join(text_line))
+         w = right-left
+         if w > width:
+            text_line.pop()
+            text_lines.append(' '.join(text_line))
+            text_line = [word]
+
+      if len(text_line) > 0:
+         text_lines.append(' '.join(text_line))
+
+      return "\n".join(text_lines)
+
+   def will_text_fit(self, text: str, width: int, font: ImageFont):
+      left, top, right, bottom = font.getbbox(text)
+      w = right-left
+      if w < width: 
+         return True
+      return False
+
 
    def outputCard(self):
       out = Image.alpha_composite(self.image,self.source_card1)
@@ -114,8 +166,7 @@ class CardConstructor:
 
       buffered = BytesIO()
       out.save(buffered, format="PNG")
-      img_str = base64.b64encode(buffered.getvalue())
-      return img_str
+      return (buffered.getvalue())
 
    def generateCard(self):
       self.getSources()
