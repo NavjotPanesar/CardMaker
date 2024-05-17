@@ -19,6 +19,9 @@ setup(
     include_package_data = True,
     license = "MIT license",
     packages = find_packages(),
+    package_data = {
+        '': ['*.png'],
+    },
     install_requires = requirements,
     classifiers=[
         "Programming Language :: Python :: 3",
