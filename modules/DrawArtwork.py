@@ -1,11 +1,10 @@
 from PIL import Image
 
 class DrawArtwork():
-   def __init__(self, artwork, artarea, art_image) -> None:
-      self.artwork = artwork
+   def __init__(self, artarea, art_image) -> None:
       self.artarea = artarea
-      self.art_image = Image.open(art_image).convert('RGBA')
-      self.art_image1 = self.art_image.resize((320,320),Image.ANTIALIAS)
+      self.art_image = art_image
+      self.art_image1 = self.art_image.resize((320,320),Image.Resampling.LANCZOS)
 
    def getArtwork(self):
       return self.art_image1

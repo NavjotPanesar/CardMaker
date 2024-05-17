@@ -30,3 +30,6 @@ Cards = [
 "../outputDunkles_Wolf_Ritual.png",
 "../outputDunkles_Wolf_Ritual.png",
 "../outputDunkles_Wolf_Ritual.png",
+"../outputDunkles_Wolf_Ritual.png",
+"../outputDunkles_Wolf_Ritual.png",
+"../outputDunkles_Wolf_Ritual.png",

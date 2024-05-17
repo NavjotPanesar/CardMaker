@@ -6,7 +6,9 @@ from modules.DrawImage import DrawImage
 from modules.DrawArtwork import DrawArtwork
 from modules.DrawAttribute import DrawAttribute
 from modules.DrawLevel import DrawLevel
-from modules.sleep import sleeper
+
+import base64
+from io import BytesIO
 
 serial_id = random.randint(000000000, 999999999)
 
@@ -69,7 +71,7 @@ class CardConstructor:
       self.image                 = DrawImage(self.json_card['card'], self.config['areas']['card_area'], self.source_card_path).getimage()
       self.source_card1          = DrawImage(self.json_card['card'], self.config['areas']['card_area'], self.source_card_path).getSourceCard()
 
-      self.artwork               = DrawArtwork(self.json_card['image_card'], self.config['areas']['img_area'], self.config['source_path'] + self.config['path_img'] + self.json_card['image_card']).getArtwork()
+      self.artwork               = DrawArtwork(self.config['areas']['img_area'], self.json_card['image_card']).getArtwork()
       
       self.attribute             = DrawAttribute(self.json_card['attribute'], self.config['areas']['attr_area'], self.attribute_path).getAttribute()
 
@@ -85,9 +87,7 @@ class CardConstructor:
       self.draw                  = ImageDraw.Draw(self.source_card1) 
 
       self.source_card1.paste(self.artwork, self.config['areas']['img_area'])
-      sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Artwork")
       self.source_card1.paste(self.attribute, self.config['areas']['attr_area']) 
-      sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Attribute")  
 
    def linkArrows(self):
       pass
@@ -100,24 +100,28 @@ class CardConstructor:
       
       if self.json_card['card'] == "XYZ":
          self.draw.text((self.config['text']['title_xy']), self.json_card['Title'], font=TitleFont, fill=self.config['text']['title_color_xyz'], align=self.config['text']['text_alignment']) 
-         sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Title")     
       else:
          self.draw.text((self.config['text']['title_xy']), self.json_card['Title'], font=TitleFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
-         sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Title")
 
       self.draw.text((self.config['text']['atk_xy']), self.json_card['Atk'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
       self.draw.text((self.config['text']['def_xy']), self.json_card['Def'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
-      sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering ATK/DEF")
       self.draw.text((self.config['text']['type_xy']), "[" + self.json_card['Type'] + "]", font=AttrFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
-      sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Type")
       self.draw.text((self.config['text']['desc_xy']), self.json_card['Descripton'], font=DescFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
-      sleeper(self.image, self.json_card['Title'],self.source_card1,"Rendering Description")
+
+   def outputCard(self):
+      out = Image.alpha_composite(self.image,self.source_card1)
+      # out.save("output/save.png")
+
+      buffered = BytesIO()
+      out.save(buffered, format="PNG")
+      img_str = base64.b64encode(buffered.getvalue())
+      return img_str
 
    def generateCard(self):
       self.getSources()
       self.pasteImages()
       self.writeText()
       self.setLevel()
-      print("finished..")
+      return self.outputCard()
 
 

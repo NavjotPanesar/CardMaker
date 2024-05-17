@@ -5,7 +5,7 @@ class DrawLevel():
       self.level = level
       self.area = area
       self.level_image = Image.open(level_image).convert('RGBA')
-      self.level_image = self.level_image.resize((25,25),Image.ANTIALIAS)
+      self.level_image = self.level_image.resize((25,25),Image.Resampling.LANCZOS)
 
    def getLevel(self):
       return self.level_image

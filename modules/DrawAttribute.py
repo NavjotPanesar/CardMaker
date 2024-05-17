@@ -5,7 +5,7 @@ class DrawAttribute():
       self.attribute = attribute
       self.area = area
       self.attribute_image = Image.open(attribute_image).convert('RGBA')
-      self.attribute_image = self.attribute_image.resize((40,40),Image.ANTIALIAS)
+      self.attribute_image = self.attribute_image.resize((40,40),Image.Resampling.LANCZOS)
 
    def getAttribute(self):
       return self.attribute_image
