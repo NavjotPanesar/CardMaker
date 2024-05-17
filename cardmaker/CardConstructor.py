@@ -31,7 +31,7 @@ class CardConstructor:
    def loadConfig(self):
       self.config = {
          'source_path': os.path.dirname(__file__)+"/img/",
-         'path_cards': "",
+         'path_cards': "cards/",
          'path_img':   "cardimages/",
          'path_attr':   "type/",
          'path_level': "lvl/",
