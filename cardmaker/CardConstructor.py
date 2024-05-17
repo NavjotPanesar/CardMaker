@@ -55,8 +55,8 @@ class CardConstructor:
             'fontsize15': 15,
             'fontsize12': 14,
             'titleFont': os.path.dirname(__file__)+'/fonts/Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf',
-            'AttrFont': os.path.dirname(__file__)+"/fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf",
-            'DescFont': os.path.dirname(__file__)+'/fonts\Yu-Gi-Oh! Matrix Book.ttf',
+            'AttrFont': os.path.dirname(__file__)+"/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf",
+            'DescFont': os.path.dirname(__file__)+'/fonts/Yu-Gi-Oh! Matrix Book.ttf',
             'title_color': 'black',
             'title_color_xyz': 'white',
             'text_alignment': 'left'
