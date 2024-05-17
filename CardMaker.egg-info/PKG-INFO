@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: cardmaker
+Version: 1.0.1
+Summary: A simple example python package.
+Author: Example
+Author-email: example@example.com
+License: MIT license
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+License-File: LICENSE
+Requires-Dist: Pillow

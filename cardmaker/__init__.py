@@ -1,1 +1,1 @@
-from cardmaker.CardConstructor import CardConstructor
+import CardConstructor

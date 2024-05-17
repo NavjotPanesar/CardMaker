@@ -1,0 +1,29 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+CardMaker.egg-info/PKG-INFO
+CardMaker.egg-info/SOURCES.txt
+CardMaker.egg-info/dependency_links.txt
+CardMaker.egg-info/requires.txt
+CardMaker.egg-info/top_level.txt
+cardmaker/CardConstructor.py
+cardmaker/DrawArtwork.py
+cardmaker/DrawAttribute.py
+cardmaker/DrawImage.py
+cardmaker/DrawLevel.py
+cardmaker/DrawLink.py
+cardmaker/DrawPendelum.py
+cardmaker/WriteDescription.py
+cardmaker/__init__.py
+cardmaker.egg-info/PKG-INFO
+cardmaker.egg-info/SOURCES.txt
+cardmaker.egg-info/dependency_links.txt
+cardmaker.egg-info/requires.txt
+cardmaker.egg-info/top_level.txt
+cardmaker/fonts/Matrix-Bold.otf
+cardmaker/fonts/Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf
+cardmaker/fonts/Yu-Gi-Oh! Matrix Book.ttf
+cardmaker/fonts/Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf
+cardmaker/fonts/__init__.py
+cardmaker/img/__init__.py
