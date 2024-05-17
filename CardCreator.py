@@ -1,8 +1,9 @@
 import base64
 from io import BytesIO
 import json
-from modules.CardConstructor import CardConstructor
 from PIL import Image
+
+from cardmaker.modules.CardConstructor import CardConstructor
 
 input_data = {
   "card": "synchro",
@@ -16,7 +17,7 @@ input_data = {
 }
 
 img_from_db_example = None
-with open("./img/cardimages/test.png", "rb") as image:
+with open("./cardmaker/img/cards/Card-trap.png", "rb") as image:
   img_from_db_example = base64.b64encode(image.read())
 
 input_data["image_card"] = Image.open(BytesIO(base64.b64decode(img_from_db_example)))
