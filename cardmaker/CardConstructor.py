@@ -107,7 +107,7 @@ class CardConstructor:
       AttrFont                   = ImageFont.truetype(self.config['text']['AttrFont'], self.config['text']['fontsize15'])
       DescFont                   = ImageFont.truetype(self.config['text']['DescFont'], self.config['text']['fontsize12'])
       
-      title_color = self.config['text']['title_color_xyz'] if self.json_card['card'] == "XYZ" else self.config['text']['title_color']
+      title_color = self.config['text']['title_color_xyz'] if self.json_card['card'] == "xyz" else self.config['text']['title_color']
       
       selected_title_font = TitleFont
       fudge = 0
