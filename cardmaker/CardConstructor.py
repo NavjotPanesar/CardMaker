@@ -1,6 +1,6 @@
 # from _config import *
 import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import random
 
 from cardmaker.DrawImage import DrawImage
@@ -128,10 +128,14 @@ class CardConstructor:
 
 
       if "foil_txt" in self.json_card["Addons"] or "guild_txt" in self.json_card["Addons"]:
+         is_foil = "foil_txt" in self.json_card["Addons"]
          text_mask = Image.new('1', (421,614))
          text_mask_draw = ImageDraw.Draw(text_mask)
          text_mask_draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill='#ffffff', align=self.config['text']['text_alignment']) 
-         foil_source = Image.open(self.foil_path).convert('RGBA') if "foil_txt" in self.json_card["Addons"] else Image.open(self.guild_path).convert('RGBA') 
+         foil_source = Image.open(self.foil_path).convert('RGBA') if is_foil else Image.open(self.guild_path).convert('RGBA') 
+         if is_foil:
+            enhancer = ImageEnhance.Contrast(foil_source)
+            foil_source = enhancer.enhance(0.5)
          foil_sized = foil_source.resize((421,614),Image.Resampling.LANCZOS)
          foil_sized.putalpha(255)
          self.source_card1.paste(foil_sized, (0,0), text_mask)
