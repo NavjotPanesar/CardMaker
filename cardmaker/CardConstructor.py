@@ -1,4 +1,5 @@
 # from _config import *
+from itertools import chain
 import os
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import random
@@ -106,6 +107,12 @@ class CardConstructor:
    def linkArrows(self):
       pass
 
+   def change_contrast(self, img, level):
+      factor = (259 * (level + 255)) / (255 * (259 - level))
+      def contrast(c):
+         return 128 + factor * (c - 128)
+      return img.point(contrast)
+
    def writeText(self):
       TitleFont                  = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize48'])
       TitleFontSmall                  = ImageFont.truetype(self.config['text']['titleFont'], self.config['text']['fontsize38'])
@@ -114,7 +121,9 @@ class CardConstructor:
       AttrFont                   = ImageFont.truetype(self.config['text']['AttrFont'], self.config['text']['fontsize15'])
       DescFont                   = ImageFont.truetype(self.config['text']['DescFont'], self.config['text']['fontsize12'])
       
-      title_color = self.config['text']['title_color_xyz'] if self.json_card['card'] == "xyz" else self.config['text']['title_color']
+      light_color_cards = ["xyz", "spell", "trap", "link"]
+      is_light_text = self.json_card['card'] in light_color_cards
+      title_color = self.config['text']['title_color_xyz'] if is_light_text else self.config['text']['title_color']
       
       selected_title_font = TitleFont
       fudge = 0
@@ -133,9 +142,22 @@ class CardConstructor:
          text_mask_draw = ImageDraw.Draw(text_mask)
          text_mask_draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill='#ffffff', align=self.config['text']['text_alignment']) 
          foil_source = Image.open(self.foil_path).convert('RGBA') if is_foil else Image.open(self.guild_path).convert('RGBA') 
-         if is_foil:
+         if is_foil and is_light_text:
+            foil_source.putalpha(255)
             enhancer = ImageEnhance.Contrast(foil_source)
-            foil_source = enhancer.enhance(0.8)
+            foil_source = enhancer.enhance(0.7)
+            enhancer = ImageEnhance.Brightness(foil_source)
+            foil_source = enhancer.enhance(4)
+         if not is_foil and not is_light_text:
+            enhancer = ImageEnhance.Brightness(foil_source)
+            foil_source = enhancer.enhance(2)
+            enhancer = ImageEnhance.Contrast(foil_source)
+            foil_source = enhancer.enhance(1)
+         if not is_foil and is_light_text:
+            enhancer = ImageEnhance.Brightness(foil_source)
+            foil_source = enhancer.enhance(2)
+            enhancer = ImageEnhance.Contrast(foil_source)
+            foil_source = enhancer.enhance(1)
          foil_sized = foil_source.resize((421,614),Image.Resampling.LANCZOS)
          foil_sized.putalpha(255)
          self.source_card1.paste(foil_sized, (0,0), text_mask)
