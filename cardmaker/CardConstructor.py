@@ -135,7 +135,7 @@ class CardConstructor:
          foil_source = Image.open(self.foil_path).convert('RGBA') if is_foil else Image.open(self.guild_path).convert('RGBA') 
          if is_foil:
             enhancer = ImageEnhance.Contrast(foil_source)
-            foil_source = enhancer.enhance(0.5)
+            foil_source = enhancer.enhance(0.8)
          foil_sized = foil_source.resize((421,614),Image.Resampling.LANCZOS)
          foil_sized.putalpha(255)
          self.source_card1.paste(foil_sized, (0,0), text_mask)
