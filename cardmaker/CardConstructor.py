@@ -36,6 +36,7 @@ class CardConstructor:
          'path_img':   "cardimages/",
          'path_attr':   "type/",
          'path_level': "lvl/",
+         'path_rarity': "rarity/",
          'i': 0,
          'areas': {
             'card_area': (0,0),
@@ -74,6 +75,8 @@ class CardConstructor:
       self.source_card_path      = self.config['source_path'] + self.config['path_cards'] +'Card-' + self.json_card['card'].lower().replace(' ', '-') + '.png'
       self.attribute_path        = self.config['source_path'] + self.config['path_attr'] + self.json_card['attribute'] + '.png'
       self.level_path            = self.config['source_path'] + self.config['path_level'] + 'Level-Red.png'
+      self.foil_path = self.config['source_path'] + self.config['path_rarity'] + 'foil.png'
+      self.guild_path = self.config['source_path'] + self.config['path_rarity'] + 'guild.png'
 
       self.image                 = DrawImage(self.json_card['card'], self.config['areas']['card_area'], self.source_card_path).getimage()
       self.source_card1          = DrawImage(self.json_card['card'], self.config['areas']['card_area'], self.source_card_path).getSourceCard()
@@ -95,6 +98,10 @@ class CardConstructor:
 
       self.source_card1.paste(self.artwork, self.config['areas']['img_area'])
       self.source_card1.paste(self.attribute, self.config['areas']['attr_area']) 
+      if "foil_pic" in self.json_card["Addons"]:
+         foil_source = Image.open(self.foil_path).convert('RGBA')
+         foil_sized = DrawArtwork(self.config['areas']['img_area'], foil_source).getArtwork().convert('RGBA')
+         self.source_card1.paste(foil_sized, self.config['areas']['img_area'], foil_sized)
 
    def linkArrows(self):
       pass
@@ -119,7 +126,18 @@ class CardConstructor:
             fudge = self.config['text']['fudge_y_xsmall_title']
       title_xy = (self.config['text']['title_xy'][0], self.config['text']['title_xy'][1] + fudge)
 
-      self.draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill=title_color, align=self.config['text']['text_alignment']) 
+
+      if "foil_txt" in self.json_card["Addons"] or "guild_txt" in self.json_card["Addons"]:
+         text_mask = Image.new('1', (421,614))
+         text_mask_draw = ImageDraw.Draw(text_mask)
+         text_mask_draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill='#ffffff', align=self.config['text']['text_alignment']) 
+         foil_source = Image.open(self.foil_path).convert('RGBA') if "foil_txt" in self.json_card["Addons"] else Image.open(self.guild_path).convert('RGBA') 
+         foil_sized = foil_source.resize((421,614),Image.Resampling.LANCZOS)
+         foil_sized.putalpha(255)
+         self.source_card1.paste(foil_sized, (0,0), text_mask)
+      else:
+         self.draw.text(title_xy, self.json_card['Title'], font=selected_title_font, fill=title_color, align=self.config['text']['text_alignment']) 
+
 
       self.draw.text((self.config['text']['atk_xy']), self.json_card['Atk'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
       self.draw.text((self.config['text']['def_xy']), self.json_card['Def'], font=ATKDEFFont, fill=self.config['text']['title_color'], align=self.config['text']['text_alignment'])
